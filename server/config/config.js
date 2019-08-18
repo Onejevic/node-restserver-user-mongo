@@ -21,7 +21,7 @@ let urlDB;
 // }
 
 //para probarlo directamente le asignamos la url dada por mongo atlas
-urlDB = 'mongodb+srv://ejemplo:sherlock067@cluster0-klcgd.mongodb.net/cafe';
+urlDB = process.env.MONGO_URI;
 
 //estas serían las url para las bd
 //mongodb://localhost:27017/cafe
