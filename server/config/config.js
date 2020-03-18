@@ -12,14 +12,14 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev'
 
 //bd
 let urlDB;
-urlDB = 'mongodb://localhost:27017/cafe';
+//urlDB = 'mongodb://localhost:27017/cafe';
+//-------------------------------------------------------------------------------------
 //creamos un if para validar si estamos conectandonos de manera local o remota
-// if (process.env.NODE_ENV === 'dev') {
-//     urlDB = 'mongodb://localhost:27017/cafe';
-// } else {
-//     urlDB = 'mongodb+srv://ejemplo:sherlock067@cluster0-klcgd.mongodb.net/cafe';
-// }
-
+if (process.env.NODE_ENV === 'dev') {
+    urlDB = 'mongodb://localhost:27017/cafe';
+} else {
+    urlDB = 'mongodb+srv://ejemplo:sherlock067@cluster0-klcgd.mongodb.net/cafe';
+}
 //para probarlo directamente le asignamos la url dada por mongo atlas
 // urlDB = process.env.MONGO_URI;
 
