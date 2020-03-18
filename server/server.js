@@ -13,10 +13,11 @@ const bodyParser = require('body-parser'); //importación que me sirve para pars
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-//importamos y usamos las rutas que tenemos en el archivo usuario, recordemos
-//que todo lo que tenga use, es un middleware y se ejecutará si o si al realizar
-//el proyecto
-app.use(require('./routes/usuario'));
+
+//para organizar todos los archivos de rutas podemos crear un archivo index donde
+//almacenará todos los archivos y después los importo en mi archivo server con
+//el fin de tener un orden.
+app.use(require('./routes/index'));
 
 //----------------------------------------------------------------------------
 //para conectarnos a la base de datos de mongo lo hacemos de la siguiente manera,

@@ -3,9 +3,22 @@ const bcrypt = require('bcrypt'); //importamos el paquete bcrypt para codificar 
 const _ = require('underscore'); //este paquete me provee de varias funcionalidades adicionales de javascript
 const app = express(); //ejecutamos express y lo almacenamos en una variable
 const Usuario = require('../models/usuario'); // importamos el models para poder crear actualizar o borrar Usuarios
+const { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacion'); // importo el archivo de middleware que contiene la validación del token y validacion del role
 //----------------------------------------------------------------------------
 //PETICIÓN GET
-app.get('/usuario', function(req, res) {
+//como observación el segundo parámetro es un middleware (creado en el archivo autenticacion.js), que se lanzará cuando yo realice la petición tipo GET en cualquier servidor,
+//por la misma razón yo no coloco el método verificaToken() con los parentesis ya que el mismo método se encargará de lanzarlo cuando sea necesario
+app.get('/usuario', verificaToken, (req, res) => {
+
+    //para realizar la prueba del token y la información que me está arrojando puedo manejarla bajo un return, es necesario tener en cuenta
+    //el lo que le sigue despues del return no se va a ejecutar por lo cual si quiero que haga lo que se tenía programado en el método get es necesario comentar
+    //este return.
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email
+    // });
+
 
     //la forma de recibir datos mediante parámetros de la url es decir (ejemplo.com/datos?desde=5) lo hacemos mediante
     //las propiedades .query.variable y lo utilizamos con una condicional que en caso de que no se envíe ninguna información
@@ -47,7 +60,10 @@ app.get('/usuario', function(req, res) {
 });
 //----------------------------------------------------------------------------
 //PETICIÓN POST
-app.post('/usuario', function(req, res) {
+//Colocamos el middelware de verificatoken en el post
+//asimismo para adicionar mas middleware, lo colocamos en un arreglo, como se muestra en el método, si no cumple con los
+//dos middleware, el funcionamiento del método no se completará.
+app.post('/usuario', [verificaToken, verificaAdmin_Role], function(req, res) {
     //para tratar la información podemos hacerlo mediante req.body(esto lo podemos hacer
     //ya que importamos el paquete bodyparser y nos devolverá un formato json)
     let body = req.body;
@@ -89,7 +105,8 @@ app.post('/usuario', function(req, res) {
 });
 //----------------------------------------------------------------------------
 //PETICIÓN PUT
-app.put('/usuario/:id', function(req, res) {
+//Colocamos el middelware de verificatoken en el put
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
     //para obtener el valor de :id, lo hacemos de esta manera
     let id = req.params.id;
 
@@ -127,8 +144,10 @@ app.put('/usuario/:id', function(req, res) {
 });
 //----------------------------------------------------------------------------
 // PETICIÓN DELETE
+//Colocamos el middelware de verificatoken en el delete
+
 //Para hacer la eliminación lo hacemos mediante una petición get (suena ilógico pero en cierta manera el parámetro viaja por la url)
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
     //obtenemos el parámetro de la variable id mandada por url
     let id = req.params.id;
     //-----------------------------------------------------------
