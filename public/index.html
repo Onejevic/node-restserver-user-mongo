@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Google Sign-In Demo</title>
+    <!-- agrego el script indicado en el manual de sign -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- agrego la meta con el proyecto que se creó en console.developer con el id generado en credenciales-->
+    <meta name="google-signin-client_id" content="112340979272-ddlv3hrspf2dh5pq7b5ufmu8ea78c5rk.apps.googleusercontent.com">
+</head>
+
+<body>
+    <!-- agrego el botón indicado en las instrucciones -->
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <!-- agrego el link para cerrar sesion -->
+    <a href="#" onclick="signOut();">Sign out</a>
+
+    <!-- creo una función que es la que se va a ejecutar cuando presione el botón (esta función la encuentro en el manual) -->
+    <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            //---------------------------------------------------------------------
+            //generamos un token mediante la función de google
+            var id_token = googleUser.getAuthResponse().id_token;
+            // console.log(id_token);
+            //---------------------------------------------------------------------
+            //mediante una petición XMLHttpRequest envío el idtoken al servidor en ella configuro la ruta donde
+            //enviaré una petición POST para el ejemplo la url es /google, el cual tendré que crear el método correspondiente
+            //al lado del server
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/google');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                console.log('Signed in as: ' + xhr.responseText);
+            };
+            xhr.send('idtoken=' + id_token);
+            //---------------------------------------------------------------------
+        }
+    </script>
+    <!-- creo la función para realizar el signout, esta función se encuentra en el manual de google -->
+    <script>
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                console.log('User signed out.');
+            });
+        }
+    </script>
+</body>
+
+</html>

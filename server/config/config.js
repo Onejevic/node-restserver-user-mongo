@@ -41,3 +41,8 @@ process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
 //esto lo creo con el fin de manejar la variable de productivo o de desarrollo, por defecto
 //la variable seed ya debí haberla creado en el servidor, para el ejemplo heroku.
 process.env.SEED = process.env.SEED || 'seed-desarrollo';
+//------------------------------------------------------------------------------------
+//GOOGLE CLIENT ID
+//Creamos una variable global con el fin de almacenar el id creado por en la consola developer
+//que nos ayudará a autenticarnos.
+process.env.CLIENT_ID = process.env.CLIENT_ID || '112340979272-ddlv3hrspf2dh5pq7b5ufmu8ea78c5rk.apps.googleusercontent.com';
