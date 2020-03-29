@@ -35,7 +35,8 @@ process.env.URLDB = urlDB;
 // 60 minutos
 // 24 horas
 // 30 dias
-process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
+//process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
+process.env.CADUCIDAD_TOKEN = '48h';
 //------------------------------------------------------------------------------------
 //seed de autenticación
 //esto lo creo con el fin de manejar la variable de productivo o de desarrollo, por defecto
